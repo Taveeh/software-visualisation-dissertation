@@ -30,7 +30,7 @@ class MetricAnalysis: BaseAnalysisAction(
         analysisScope.accept {virtualFile ->
             ReadAction.run<Exception> {
                 val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
-                if (psiFile.name.endsWith(".class")) {
+                if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {
                     return@run
                 }
                 log.info(psiFile.name)

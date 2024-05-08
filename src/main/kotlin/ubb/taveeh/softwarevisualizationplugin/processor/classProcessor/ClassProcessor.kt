@@ -8,4 +8,6 @@ open class ClassProcessor(protected val psiClass: PsiClass) {
     }
 
     open fun getName(): String = "Base Class Processor"
+
+    fun getClass(): String = psiClass.name ?: "Unnamed Class"
 }
