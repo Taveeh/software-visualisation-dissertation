@@ -8,10 +8,7 @@ import com.intellij.psi.PsiTypeParameter
 import io.ktor.util.reflect.*
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import ubb.taveeh.softwarevisualizationplugin.processor.classProcessor.ClassProcessor
-import ubb.taveeh.softwarevisualizationplugin.processor.classProcessor.LinesOfCodeProcessor
-import ubb.taveeh.softwarevisualizationplugin.processor.classProcessor.NumberOfChildClasses
-import ubb.taveeh.softwarevisualizationplugin.processor.classProcessor.NumberOfMethodsProcessor
+import ubb.taveeh.softwarevisualizationplugin.processor.classProcessor.*
 
 class ClassMetricProcessor(
     private val psiFile: PsiFile
@@ -40,6 +37,8 @@ class ClassMetricProcessor(
                 }
                 processors.add(LinesOfCodeProcessor(psiClass = it))
                 processors.add(NumberOfMethodsProcessor(psiClass = it))
+                processors.add(NumberOfClassMembersProcessor(psiClass = it))
+                processors.add(DepthOfInheritanceTreeProcessor(psiClass = it))
             }
         }
     }
