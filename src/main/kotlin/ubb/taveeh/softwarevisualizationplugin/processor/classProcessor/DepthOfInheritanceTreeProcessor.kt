@@ -9,9 +9,6 @@ class DepthOfInheritanceTreeProcessor(psiClass: PsiClass): ClassProcessor(psiCla
         var currentClass: PsiClass? = psiClass
         while(currentClass != null) {
             count++;
-
-            println(currentClass.superClass)
-            println(currentClass.parent)
             currentClass = currentClass.superClass
         }
 

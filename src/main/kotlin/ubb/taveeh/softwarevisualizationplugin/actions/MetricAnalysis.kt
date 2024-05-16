@@ -12,6 +12,7 @@ import com.intellij.testFramework.utils.vfs.getPsiFile
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import ubb.taveeh.softwarevisualizationplugin.processor.ClassMetricProcessor
+import ubb.taveeh.softwarevisualizationplugin.processor.MethodMetricProcessor
 
 class MetricAnalysis: BaseAnalysisAction(
     "Analyze Metrics", "Choose Scope for Metric Analysis"
@@ -26,20 +27,38 @@ class MetricAnalysis: BaseAnalysisAction(
         log.info("Project ----> " + project.name)
         val psiManager: PsiManager = PsiManager.getInstance(project)
 
+        if (analysisScope.scopeType == AnalysisScope.PROJECT) {
+            analysisScope.accept {virtualFile ->
+                ReadAction.run<Exception> {
+                    val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
+                    if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {
+                        return@run
+                    }
+                    log.info(psiFile.name)
 
-        analysisScope.accept {virtualFile ->
-            ReadAction.run<Exception> {
-                val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
-                if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {
-                    return@run
+                    val classMetricProcessor = ClassMetricProcessor(psiFile)
+                    classMetricProcessor.init()
+                    classMetricProcessor.process()
                 }
-                log.info(psiFile.name)
-
-                val classMetricProcessor = ClassMetricProcessor(psiFile)
-                classMetricProcessor.init()
-                classMetricProcessor.process()
+                return@accept true;
             }
-            return@accept true;
+        } else if (analysisScope.scopeType == AnalysisScope.FILE) {
+            analysisScope.accept {virtualFile ->
+                ReadAction.run<Exception> {
+                    val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
+                    if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {
+                        return@run
+                    }
+                    log.info(psiFile.name)
+
+
+                    val methodMetricProcessor = MethodMetricProcessor(psiFile)
+                    methodMetricProcessor.init()
+                    methodMetricProcessor.process()
+                }
+                return@accept true;
+            }
         }
+
     }
 }

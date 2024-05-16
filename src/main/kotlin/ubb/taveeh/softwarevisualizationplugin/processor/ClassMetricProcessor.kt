@@ -23,7 +23,6 @@ class ClassMetricProcessor(
 
     fun init() {
         if (psiFile.isPhysical && psiFile.instanceOf(PsiClassOwner::class)) {
-            val psiClassOwner =
             (psiFile as PsiClassOwner).classes.forEach {
                 if (!it.isValid  || it.instanceOf(PsiAnonymousClass::class) || it.instanceOf(
                         PsiTypeParameter::class) || it.parent.instanceOf(PsiDeclarationStatement::class)) {
@@ -31,10 +30,12 @@ class ClassMetricProcessor(
                 }
 
                 processors.add(NumberOfChildClasses(psiClass = it))
+                processors.add(CouplingBetweenObjectsClassProcessor(psiClass = it))
 
                 if (it.isInterface) {
                     return@forEach
                 }
+                processors.add(ResponseForClassProcessor(psiClass = it))
                 processors.add(LinesOfCodeProcessor(psiClass = it))
                 processors.add(NumberOfMethodsProcessor(psiClass = it))
                 processors.add(NumberOfClassMembersProcessor(psiClass = it))
