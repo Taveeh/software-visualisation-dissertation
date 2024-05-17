@@ -3,7 +3,7 @@ package ubb.taveeh.softwarevisualizationplugin.processor.methodProcessor
 import com.intellij.psi.PsiMethod
 import ubb.taveeh.softwarevisualizationplugin.processor.visitors.MethodComplexityVisitor
 
-class CyclomaticComplexityMethodProcessor (psiMethod: PsiMethod): MethodProcessor(psiMethod) {
+class CyclomaticComplexityMethodProcessor(psiMethod: PsiMethod) : MethodProcessor(psiMethod) {
     override fun process(): Int {
         val complexityVisitor = MethodComplexityVisitor()
         psiMethod.accept(complexityVisitor)

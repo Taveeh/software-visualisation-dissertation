@@ -309,14 +309,24 @@ class DependencyMapUtils {
         val currentDependencies = dependencies.toMutableSet()
 
         psiExpression.type?.let {
-            addDependencyForType(currentDependencies,
-                it, currentClass)
+            addDependencyForType(
+                currentDependencies,
+                it, currentClass
+            )
         }?.let { currentDependencies.addAll(it) }
 
-        currentDependencies.addAll(addDependenciesForExpression(currentDependencies, psiExpression.lExpression, currentClass))
+        currentDependencies.addAll(
+            addDependenciesForExpression(
+                currentDependencies,
+                psiExpression.lExpression,
+                currentClass
+            )
+        )
         psiExpression.rExpression?.let {
-            addDependenciesForExpression(currentDependencies,
-                it, currentClass)
+            addDependenciesForExpression(
+                currentDependencies,
+                it, currentClass
+            )
         }?.let { currentDependencies.addAll(it) }
         return currentDependencies
     }

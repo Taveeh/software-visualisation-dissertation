@@ -24,8 +24,10 @@ class ClassMetricProcessor(
     fun init() {
         if (psiFile.isPhysical && psiFile.instanceOf(PsiClassOwner::class)) {
             (psiFile as PsiClassOwner).classes.forEach {
-                if (!it.isValid  || it.instanceOf(PsiAnonymousClass::class) || it.instanceOf(
-                        PsiTypeParameter::class) || it.parent.instanceOf(PsiDeclarationStatement::class)) {
+                if (!it.isValid || it.instanceOf(PsiAnonymousClass::class) || it.instanceOf(
+                        PsiTypeParameter::class
+                    ) || it.parent.instanceOf(PsiDeclarationStatement::class)
+                ) {
                     return@forEach
                 }
 
@@ -43,6 +45,7 @@ class ClassMetricProcessor(
             }
         }
     }
+
     fun process() {
         processors.forEach {
             log.info("Class ${it.getClass()}: For the metric ${it.getName()} we have metric evaluated as: ${it.process()}\n")

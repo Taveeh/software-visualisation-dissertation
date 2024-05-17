@@ -7,7 +7,7 @@ import com.intellij.psi.PsiMethod
 
 class MethodCounterVisitor(
     private val calledMethods: MutableSet<PsiMethod>
-): JavaRecursiveElementVisitor() {
+) : JavaRecursiveElementVisitor() {
     override fun visitClass(aClass: PsiClass) {
         // do nothing
     }

@@ -9,6 +9,7 @@ class CouplingBetweenObjectsClassProcessor(psiClass: PsiClass) : ClassProcessor(
     companion object {
         val dependencyMapUtils = DependencyMapUtils()
     }
+
     override fun process(): Int {
         val dependencies = dependencyMapUtils.computeDependencies(psiClass)
         return dependencies.size

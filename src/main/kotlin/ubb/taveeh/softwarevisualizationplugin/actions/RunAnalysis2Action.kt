@@ -20,6 +20,7 @@ class RunAnalysis2Action(
     companion object {
         private val log: Logger = LogManager.getLogger(RunAnalysis2Action::class)
     }
+
     override fun actionPerformed(actionEvent: AnActionEvent) {
         BrowserUtil.open("https://www.google.com/");
         val psiFile = Optional.ofNullable<PsiFile>(actionEvent.getData(LangDataKeys.PSI_FILE))

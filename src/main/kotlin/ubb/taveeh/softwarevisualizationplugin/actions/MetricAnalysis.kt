@@ -14,13 +14,14 @@ import org.apache.logging.log4j.Logger
 import ubb.taveeh.softwarevisualizationplugin.processor.ClassMetricProcessor
 import ubb.taveeh.softwarevisualizationplugin.processor.MethodMetricProcessor
 
-class MetricAnalysis: BaseAnalysisAction(
+class MetricAnalysis : BaseAnalysisAction(
     "Analyze Metrics", "Choose Scope for Metric Analysis"
 ) {
 
     companion object {
         private val log: Logger = LogManager.getLogger(RunAnalysis2Action::class)
     }
+
     override fun analyze(project: Project, analysisScope: AnalysisScope) {
         log.info("Something something please display something")
         log.info("Scope ----> " + analysisScope.displayName)
@@ -28,7 +29,7 @@ class MetricAnalysis: BaseAnalysisAction(
         val psiManager: PsiManager = PsiManager.getInstance(project)
 
         if (analysisScope.scopeType == AnalysisScope.PROJECT) {
-            analysisScope.accept {virtualFile ->
+            analysisScope.accept { virtualFile ->
                 ReadAction.run<Exception> {
                     val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
                     if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {
@@ -43,7 +44,7 @@ class MetricAnalysis: BaseAnalysisAction(
                 return@accept true;
             }
         } else if (analysisScope.scopeType == AnalysisScope.FILE) {
-            analysisScope.accept {virtualFile ->
+            analysisScope.accept { virtualFile ->
                 ReadAction.run<Exception> {
                     val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
                     if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {

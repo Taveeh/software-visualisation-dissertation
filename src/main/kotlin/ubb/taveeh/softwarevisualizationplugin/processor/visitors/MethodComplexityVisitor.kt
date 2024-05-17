@@ -2,9 +2,11 @@ package ubb.taveeh.softwarevisualizationplugin.processor.visitors
 
 import com.intellij.psi.*
 import io.ktor.util.reflect.*
+import org.jetbrains.uast.util.isInstanceOf
 
-class MethodComplexityVisitor: JavaRecursiveElementWalkingVisitor() {
+class MethodComplexityVisitor : JavaRecursiveElementWalkingVisitor() {
     var complexity: Int = 1
+
     override fun visitForStatement(statement: PsiForStatement) {
         super.visitForStatement(statement)
         complexity++
@@ -57,6 +59,31 @@ class MethodComplexityVisitor: JavaRecursiveElementWalkingVisitor() {
                     complexity++
                 }
             }
+        }
+    }
+
+    override fun visitCatchSection(section: PsiCatchSection) {
+        super.visitCatchSection(section)
+        complexity++
+    }
+
+    override fun visitLambdaExpression(expression: PsiLambdaExpression) {
+        super.visitLambdaExpression(expression)
+    }
+
+    override fun visitMethodCallExpression(expression: PsiMethodCallExpression) {
+        super.visitMethodCallExpression(expression)
+
+        expression.resolveMethod()?.let {
+            it.parameters.map { param ->
+                if (param.type.instanceOf(PsiClassType::class)) {
+                    (param.type as PsiClassType).className == "Predicate" || (param.type as PsiClassType).className == "Comparator"
+                } else false
+            }.fold(false, Boolean::or).let { isPredicateOrComparator ->
+                    if (isPredicateOrComparator) {
+                        complexity++
+                    }
+                }
         }
     }
 }

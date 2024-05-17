@@ -13,13 +13,15 @@ repositories {
 
 dependencies {
     implementation("org.apache.logging.log4j:log4j-core:2.17.1")
+    implementation(kotlin("stdlib"))
+
 }
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     version.set("2023.1.5")
     type.set("IC") // Target IDE Platform
-    plugins.set(listOf(/* Plugin Dependencies */))
+    plugins.set(listOf("org.jetbrains.kotlin"))
     plugins.add("com.intellij.java")
 }
 

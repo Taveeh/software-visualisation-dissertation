@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger
 import ubb.taveeh.softwarevisualizationplugin.LineUtils
 import ubb.taveeh.softwarevisualizationplugin.processor.ClassMetricProcessor
 
-class LinesOfCodeProcessor(psiClass: PsiClass): ClassProcessor(psiClass = psiClass) {
+class LinesOfCodeProcessor(psiClass: PsiClass) : ClassProcessor(psiClass = psiClass) {
     override fun process(): Int {
         var linesOfCode = LineUtils().countLines(psiClass.text)
 
