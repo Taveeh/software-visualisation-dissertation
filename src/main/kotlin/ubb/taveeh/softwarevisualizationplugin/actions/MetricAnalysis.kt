@@ -32,60 +32,48 @@ class MetricAnalysis : BaseAnalysisAction(
         log.info("Scope ----> " + analysisScope.displayName)
         log.info("Project ----> " + project.name)
         val psiManager: PsiManager = PsiManager.getInstance(project)
-
-//        if (analysisScope.scopeType == AnalysisScope.PROJECT) {
-            analysisScope.accept { virtualFile ->
-                ReadAction.run<Exception> {
-                    val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
-                    if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {
-                        return@run
-                    }
-                    log.info(psiFile.name)
-                    val results = if (analysisScope.scopeType == AnalysisScope.PROJECT) {
-                        val classMetricProcessor = ClassMetricProcessor(psiFile)
-                        classMetricProcessor.init()
-                        classMetricProcessor.process()
-                    } else if (analysisScope.scopeType == AnalysisScope.FILE) {
-                        val methodMetricProcessor = MethodMetricProcessor(psiFile)
-                        methodMetricProcessor.init()
-                        methodMetricProcessor.process()
-                    } else {
-                        mapOf()
-                    }
-                    var toolwindow: ToolWindow
-
-                    try {
-                         toolwindow = ToolWindowManager.getInstance(project).registerToolWindow(RegisterToolWindowTask("SoftwareMetrics"))
-                    } catch (e: Exception) {
-                        toolwindow = ToolWindowManager.getInstance(project).getToolWindow("SoftwareMetrics")!!
-                    }
-
-                    val metricsToolWindowFactory = MetricsToolWindowFactory()
-                    metricsToolWindowFactory.setResultsContainer(ResultsContainer(results))
-                    metricsToolWindowFactory.createToolWindowContent(project, toolwindow)
-
-
-//                    val classMetricProcessor = ClassMetricProcessor(psiFile)
-//                    classMetricProcessor.init()
-//                    classMetricProcessor.process()
+        val results: MutableMap<String, MutableMap<String, Int>> = mutableMapOf()
+        var analyzedComponents = ""
+        analysisScope.accept { virtualFile ->
+            ReadAction.run<Exception> {
+                val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
+                if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {
+                    return@run
                 }
-                return@accept true;
+                log.info(psiFile.name)
+                val classResults = if (analysisScope.scopeType == AnalysisScope.PROJECT) {
+                    analyzedComponents = "Class"
+                    val classMetricProcessor = ClassMetricProcessor(psiFile)
+                    classMetricProcessor.init()
+                    classMetricProcessor.process()
+                } else if (analysisScope.scopeType == AnalysisScope.FILE) {
+                    analyzedComponents = "Method"
+                    val methodMetricProcessor = MethodMetricProcessor(psiFile)
+                    methodMetricProcessor.init()
+                    methodMetricProcessor.process()
+                } else {
+                    mapOf()
+                }
+
+
+                classResults.forEach {
+                    val className = it.key
+                    if (!results.containsKey(className)) {
+                        results[className] = mutableMapOf()
+                    }
+                    results[className]?.putAll(it.value)
+                }
+
             }
-//        } else if (analysisScope.scopeType == AnalysisScope.FILE) {
-//            analysisScope.accept { virtualFile ->
-//                ReadAction.run<Exception> {
-//                    val psiFile: PsiFile = psiManager.findFile(virtualFile) ?: return@run
-//                    if (!psiFile.name.endsWith(".java") && !psiFile.name.endsWith(".kt")) {
-//                        return@run
-//                    }
-//                    log.info(psiFile.name)
-//
-//
-//                    val methodMetricProcessor = MethodMetricProcessor(psiFile)
-//                    methodMetricProcessor.init()
-//                    methodMetricProcessor.process()
-//                }
-//                return@accept true;
-//            }
+            return@accept true;
         }
+        val toolwindow: ToolWindow = try {
+            ToolWindowManager.getInstance(project).registerToolWindow(RegisterToolWindowTask("SoftwareMetrics"))
+        } catch (e: Exception) {
+            ToolWindowManager.getInstance(project).getToolWindow("SoftwareMetrics")!!
+        }
+        val metricsToolWindowFactory = MetricsToolWindowFactory()
+        metricsToolWindowFactory.setResultsContainer(ResultsContainer(results, analyzedComponents))
+        metricsToolWindowFactory.createToolWindowContent(project, toolwindow)
+    }
 }

@@ -50,7 +50,10 @@ class ClassMetricProcessor(
         val resultMap: MutableMap<String, MutableMap<String, Int>>  = mutableMapOf()
         processors.forEach {
             log.info("Class ${it.getClass()}: For the metric ${it.getName()} we have metric evaluated as: ${it.process()}\n")
-            resultMap[it.getClass()] = mutableMapOf(it.getName() to it.process())
+            if (resultMap[it.getClass()] == null) {
+                resultMap[it.getClass()] = mutableMapOf()
+            }
+            resultMap[it.getClass()]?.put(it.getName(), it.process())
         }
         return resultMap
     }
