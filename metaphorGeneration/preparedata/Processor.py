@@ -64,7 +64,7 @@ class Processor:
                 if initial_x > max_x:
                     max_x = initial_x
                 initial_x = 0
-                initial_y += max_body_size + 10
+                initial_y += max_body_size + 10 + cloth.get_body_size() / 4
                 max_body_size = 0
 
         if initial_x > max_x:

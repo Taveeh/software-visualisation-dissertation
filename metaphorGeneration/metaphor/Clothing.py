@@ -56,10 +56,14 @@ class Clothing:
             return 1
         return 2
 
+    def has_collar(self):
+        return self._metrics[metrics.DEPTH_OF_INHERITANCE_TREE] > 6
+
     def draw(self, image: plt.Axes, starting_point_x: int, starting_point_y: int, index: int):
         pass
 
-    def draw_stripes(self, image: plt.Axes, starting_point_x: float, starting_point_y: float, length: float, width: float):
+    def draw_stripes(self, image: plt.Axes, starting_point_x: float, starting_point_y: float, length: float,
+                     width: float):
         draw_rectangle(
             image,
             starting_point_x,
@@ -69,3 +73,6 @@ class Clothing:
             edge_color=self.get_color().name.lower(),
             face_color=self.get_color().name.lower()
         )
+
+    def draw_collar(self, image: plt.Axes, starting_point_x: int, starting_point_y: int):
+        pass

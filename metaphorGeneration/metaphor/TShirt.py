@@ -47,6 +47,8 @@ class TShirt(Clothing):
                 self.get_body_size() / 6
             )
 
+        self.draw_collar(image, starting_point_x, starting_point_y)
+
         image.text(
             starting_point_x + self.get_body_size() / 2,
             starting_point_y + self.get_body_size() + 3,
@@ -104,5 +106,26 @@ class TShirt(Clothing):
             point_b_y + length / 2
         ]
 
+    def draw_collar(self, image: plt.Axes, starting_point_x: int, starting_point_y: int):
+        triangle_side_size = self.get_body_size() / 4
+        print("Triangle side size: ", triangle_side_size)
+        print('Starting point x: ', starting_point_x)
+        print('Starting point y: ', starting_point_y)
+        draw_triangle(
+            image,
+            starting_point_x + self.get_body_size() / 2,
+            starting_point_y,
+            (starting_point_x + self.get_body_size() / 2 - triangle_side_size, starting_point_y),
+            (starting_point_x + self.get_body_size() / 2 - triangle_side_size, starting_point_y - triangle_side_size),
+            edge_color=self.get_color().name.lower()
+        )
+        draw_triangle(
+            image,
+            starting_point_x + self.get_body_size() / 2,
+            starting_point_y,
+            (starting_point_x + self.get_body_size() / 2 + triangle_side_size, starting_point_y),
+            (starting_point_x + self.get_body_size() / 2 + triangle_side_size, starting_point_y - triangle_side_size),
+            edge_color=self.get_color().name.lower()
+        )
 
 

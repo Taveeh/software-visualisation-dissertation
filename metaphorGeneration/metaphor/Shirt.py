@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 
 from metaphor.Clothing import Clothing
 from metaphor.TShirt import TShirt
+from utils.basic_figures import draw_triangle
 
 
 class Shirt(TShirt):

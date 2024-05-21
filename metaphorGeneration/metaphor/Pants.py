@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-from utils.basic_figures import draw_rectangle
+from utils.basic_figures import draw_rectangle, draw_circle
 from metaphor.Clothing import Clothing
 
 
@@ -65,7 +65,40 @@ class Pants(Clothing):
                 body_height + (self.get_left_sleeve_length() if i == 0 else self.get_right_sleeve_length()),
             )
 
+        if self.has_collar():
+            self.draw_collar(image, starting_point_x, starting_point_y)
+
     def draw_stripes(self, image: plt.Axes, starting_point_x: float, starting_point_y: float, length: float,
                      width: float):
         draw_rectangle(image, starting_point_x, starting_point_y, length, width,
                        edge_color=self.get_color().name.lower(), face_color=self.get_color().name.lower())
+
+    def draw_collar(self, image: plt.Axes, starting_point_x: int, starting_point_y: int):
+        body_width = self.get_body_size()
+        body_height = self.get_body_size() / 3
+
+        collar_height = body_height / 2
+
+        draw_rectangle(
+            image,
+            starting_point_x,
+            starting_point_y - collar_height,
+            body_width,
+            collar_height,
+            edge_color=self.get_color().name.lower(),
+        )
+
+        draw_circle(
+            image,
+            starting_point_x + body_width / 2,
+            starting_point_y - collar_height / 2,
+            collar_height / 4,
+            edge_color=self.get_color().name.lower(),
+            face_color=self.get_color().name.lower()
+        )
+        # image.scatter(
+        #     starting_point_x + body_width / 2,
+        #     starting_point_y - collar_height / 2,
+        #     color=self.get_color().name.lower(),
+        #     s=2
+        # )

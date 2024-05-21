@@ -29,10 +29,10 @@ def draw_circle(ax, x, y, radius, edge_color='b', face_color=None):
     ax.add_patch(circle)
 
 
-def draw_triangle(ax, x, y, vector1, vector2, edge_color='b', face_color=None):
+def draw_triangle(ax, x, y, point2, point3, edge_color='b', face_color=None):
     x1, y1 = x, y
-    x2, y2 = x + vector1[0], y + vector1[1]
-    x3, y3 = x + vector2[0], y + vector2[1]
+    x2, y2 = point2[0],  point2[1]
+    x3, y3 = point3[0], point3[1]
     triangle = patches.Polygon([(x1, y1), (x2, y2), (x3, y3)], closed=True, fill=face_color, edgecolor=edge_color,
                                facecolor=face_color)
     ax.add_patch(triangle)
