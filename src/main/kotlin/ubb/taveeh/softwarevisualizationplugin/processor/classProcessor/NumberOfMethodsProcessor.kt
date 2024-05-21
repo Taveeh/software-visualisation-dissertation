@@ -4,7 +4,7 @@ import com.intellij.psi.PsiClass
 
 class NumberOfMethodsProcessor(psiClass: PsiClass) : ClassProcessor(psiClass = psiClass) {
     override fun process(): Int {
-        return psiClass.allMethods.size
+        return psiClass.methods.size
     }
 
     override fun getName(): String = "Number of Methods"

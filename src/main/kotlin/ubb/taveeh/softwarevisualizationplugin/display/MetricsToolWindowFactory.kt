@@ -1,4 +1,4 @@
-package ubb.taveeh.softwarevisualizationplugin.processor.display
+package ubb.taveeh.softwarevisualizationplugin.display
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow

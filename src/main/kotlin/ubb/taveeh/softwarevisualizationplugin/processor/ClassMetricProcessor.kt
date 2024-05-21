@@ -6,18 +6,12 @@ import com.intellij.psi.PsiDeclarationStatement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiTypeParameter
 import io.ktor.util.reflect.*
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import ubb.taveeh.softwarevisualizationplugin.processor.classProcessor.*
 
 class ClassMetricProcessor(
     private val psiFile: PsiFile
 ) {
 
-
-    companion object {
-        private val log: Logger = LogManager.getLogger(ClassMetricProcessor::class)
-    }
 
     private val processors: MutableList<ClassProcessor> = mutableListOf()
 
@@ -49,7 +43,7 @@ class ClassMetricProcessor(
     fun process(): Map<String, Map<String, Int>> {
         val resultMap: MutableMap<String, MutableMap<String, Int>>  = mutableMapOf()
         processors.forEach {
-            log.info("Class ${it.getClass()}: For the metric ${it.getName()} we have metric evaluated as: ${it.process()}\n")
+            println("Class ${it.getClass()}: For the metric ${it.getName()} we have metric evaluated as: ${it.process()}\n")
             if (resultMap[it.getClass()] == null) {
                 resultMap[it.getClass()] = mutableMapOf()
             }

@@ -22,11 +22,11 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
     <depends>org.jetbrains.kotlin</depends>
-
+    <depends>com.intellij.modules.python-in-non-pycharm-ide-capable</depends>
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-<!--        <toolWindow id="SoftwareVisualizationMetrics" anchor="right" factoryClass="ubb.taveeh.softwarevisualizationplugin.processor.display.MetricsToolWindowFactory" secondary="true" />-->
+        <toolWindow id="SoftwareVisualizationMetrics" anchor="right" factoryClass="ubb.taveeh.softwarevisualizationplugin.display.MetricsToolWindowFactory" secondary="true" />
     </extensions>
     <actions>
         <action id="Action.Test.RunAnalysis" class="ubb.taveeh.softwarevisualizationplugin.actions.RunAnalysis2Action" text="Do Something Test" description="Do something for testing of a plugin">

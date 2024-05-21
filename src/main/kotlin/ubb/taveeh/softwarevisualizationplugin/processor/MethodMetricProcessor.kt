@@ -2,8 +2,6 @@ package ubb.taveeh.softwarevisualizationplugin.processor
 
 import com.intellij.psi.*
 import io.ktor.util.reflect.*
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 import ubb.taveeh.softwarevisualizationplugin.processor.methodProcessor.CyclomaticComplexityMethodProcessor
 import ubb.taveeh.softwarevisualizationplugin.processor.methodProcessor.MethodProcessor
 import ubb.taveeh.softwarevisualizationplugin.processor.methodProcessor.NumberOfParametersMethodProcessor
@@ -13,9 +11,6 @@ class MethodMetricProcessor(
     private val psiFile: PsiFile
 ) {
 
-    companion object {
-        private val log: Logger = LogManager.getLogger(MethodMetricProcessor::class)
-    }
 
     /**
      * it.methods.map { met ->
@@ -58,7 +53,7 @@ class MethodMetricProcessor(
     fun process(): Map<String, Map<String, Int>> {
         val resultMap: MutableMap<String, MutableMap<String, Int>> = mutableMapOf()
         processors.forEach {
-            log.info("Method ${it.getMethod()}: For the metric ${it.getName()} we have metric evaluated as: ${it.process()}\n")
+            println("Method ${it.getMethod()}: For the metric ${it.getName()} we have metric evaluated as: ${it.process()}\n")
             if (resultMap[it.getMethod()] == null) {
                 resultMap[it.getMethod()] = mutableMapOf()
             }

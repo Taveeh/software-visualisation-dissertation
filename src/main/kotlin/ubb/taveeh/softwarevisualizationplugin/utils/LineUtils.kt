@@ -1,4 +1,4 @@
-package ubb.taveeh.softwarevisualizationplugin
+package ubb.taveeh.softwarevisualizationplugin.utils
 
 class LineUtils {
     fun countLines(text: String?): Int {

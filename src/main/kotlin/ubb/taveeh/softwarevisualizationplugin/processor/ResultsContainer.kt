@@ -10,6 +10,10 @@ class ResultsContainer(
         return results[element] ?: emptyMap()
     }
 
+    fun getResults(): Map<String, Map<String, Int>> {
+        return results
+    }
+
     private fun getResultsForElementAndMetric(element: String, metric: String): Int {
         return results[element]?.get(metric) ?: 0
     }
