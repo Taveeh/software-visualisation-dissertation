@@ -13,9 +13,9 @@ MAX_CLASSES_PER_FIGURE = 50
 
 
 class Processor:
-    def __init__(self, metrics_json):
+    def __init__(self, metrics_json, should_show=True):
         self.__metrics: dict = {}
-
+        self.__should_show = should_show
         for class_name in metrics_json:
             if len(metrics_json[class_name]) == 2:
                 continue
@@ -86,7 +86,7 @@ class Processor:
         plt.savefig(
             f'{file_path}/image-{self.__count}.png')
         self.__count += 1
-        if self.__count < 20:
+        if self.__count < 20 and self.__should_show:
             plt.show()
 
     def draw_metrics(self):

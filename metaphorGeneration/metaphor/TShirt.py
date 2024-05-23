@@ -46,8 +46,8 @@ class TShirt(Clothing):
                 self.get_body_size(),
                 self.get_body_size() / 6
             )
-
-        self.draw_collar(image, starting_point_x, starting_point_y)
+        if self.has_collar():
+            self.draw_collar(image, starting_point_x, starting_point_y)
 
         image.text(
             starting_point_x + self.get_body_size() / 2,

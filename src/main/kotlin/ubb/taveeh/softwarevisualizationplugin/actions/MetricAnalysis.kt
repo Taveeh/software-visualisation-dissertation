@@ -15,7 +15,9 @@ import ubb.taveeh.softwarevisualizationplugin.display.MetricsToolWindowFactory
 import ubb.taveeh.softwarevisualizationplugin.processor.ClassMetricProcessor
 import ubb.taveeh.softwarevisualizationplugin.processor.MethodMetricProcessor
 import ubb.taveeh.softwarevisualizationplugin.processor.ResultsContainer
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
 import java.time.LocalDateTime
 import java.util.*
 
@@ -74,19 +76,55 @@ class MetricAnalysis : BaseAnalysisAction(
         metricsToolWindowFactory.createToolWindowContent(project, toolwindow)
 
         println("Results: $results")
-        writeResultsToFile(results)
+        val currentTime = LocalDateTime.now()
+        val fileName =
+            "C:\\Users\\ocustura\\Documents\\Dissertation\\software-visualisation-dissertation\\files\\results-${currentTime.dayOfMonth}_${currentTime.monthValue}-${currentTime.hour}_${currentTime.minute}.json"
 
-
-//        val drawingToolWindowFactory = DrawingToolWindowFactory(uuid)
-//        drawingToolWindowFactory.setResultsContainer(ResultsContainer(results, analyzedComponents))
-//        drawingToolWindowFactory.createToolWindowContent(project, toolwindow)
+        writeResultsToFile(results, fileName)
+        runPythonScript(
+            "C:\\Users\\ocustura\\Documents\\Dissertation\\software-visualisation-dissertation\\metaphorGeneration\\main.py",
+            listOf(fileName)
+        )
     }
 
-    private fun writeResultsToFile(results: Map<String, Map<String, Int>>) {
-        val currentTime = LocalDateTime.now()
-        val file =
-            File("C:\\Users\\ocustura\\Documents\\Dissertation\\software-visualisation-dissertation\\files\\results-${currentTime.dayOfMonth}_${currentTime.monthValue}-${currentTime.hour}_${currentTime.minute}.json")
+    private fun writeResultsToFile(results: Map<String, Map<String, Int>>, fileName: String) {
+
+        val file = File(fileName)
         val json = Json.encodeToString(results)
         file.writeText(json)
+    }
+
+    private fun runPythonScript(scriptPath: String, args: List<String> = listOf()) {
+        val processBuilder = ProcessBuilder("py", scriptPath, *args.toTypedArray())
+        val process = processBuilder.start()
+
+        val outputReader = BufferedReader(InputStreamReader(process.inputStream))
+        val errorReader = BufferedReader(InputStreamReader(process.errorStream))
+
+        val outputThread = Thread {
+            outputReader.lines().forEach { line ->
+                println("OUTPUT: $line") // Handle the output as needed
+            }
+        }
+
+        val errorThread = Thread {
+            errorReader.lines().forEach { line ->
+                System.err.println("ERROR: $line") // Handle the error output as needed
+            }
+        }
+
+        outputThread.start()
+        errorThread.start()
+
+        val exitCode = process.waitFor()
+
+        outputThread.join()
+        errorThread.join()
+
+        if (exitCode != 0) {
+            println("Running python script failed with exit code $exitCode")
+        } else {
+            println("Python script executed successfully")
+        }
     }
 }

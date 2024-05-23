@@ -15,8 +15,8 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib", "1.9.22"))
-    implementation("org.jetbrains.kotlinx:kandy-lets-plot:0.6.0"){
-        exclude(group= "xml-apis", module= "xml-apis")
+    implementation("org.jetbrains.kotlinx:kandy-lets-plot:0.6.0") {
+        exclude(group = "xml-apis", module = "xml-apis")
     }
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
