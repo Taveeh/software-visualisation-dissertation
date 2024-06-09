@@ -25,14 +25,9 @@
     <depends>com.intellij.modules.python-in-non-pycharm-ide-capable</depends>
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="SoftwareVisualizationMetrics" anchor="right" factoryClass="ubb.taveeh.softwarevisualizationplugin.display.MetricsToolWindowFactory" secondary="true" />
-    </extensions>
-    <actions>
-        <action id="Action.Test.RunAnalysis" class="ubb.taveeh.softwarevisualizationplugin.actions.RunAnalysis2Action" text="Do Something Test" description="Do something for testing of a plugin">
-            <add-to-group group-id="ToolsMenu" anchor="last" />
-        </action>
-    </actions>
+<!--    <extensions defaultExtensionNs="com.intellij">-->
+<!--        <toolWindow id="SoftwareVisualizationMetrics" anchor="right" factoryClass="ubb.taveeh.softwarevisualizationplugin.display.MetricsToolWindowFactory" secondary="true" />-->
+<!--    </extensions>-->
     <actions>
         <action id="Action.Test.MetricAnalysis" class="ubb.taveeh.softwarevisualizationplugin.actions.MetricAnalysis" text="Generate Metaphor" description="Generate metaphor towards program comprehension">
             <add-to-group group-id="ToolsMenu" anchor="last" />

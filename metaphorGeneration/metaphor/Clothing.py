@@ -57,7 +57,7 @@ class Clothing:
         return 2
 
     def has_collar(self):
-        return self._metrics[metrics.DEPTH_OF_INHERITANCE_TREE] > 6
+        return self._metrics[metrics.DEPTH_OF_INHERITANCE_TREE] >= 6
 
     def draw(self, image: plt.Axes, starting_point_x: int, starting_point_y: int, index: int):
         pass

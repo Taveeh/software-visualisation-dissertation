@@ -1,6 +1,8 @@
 package ubb.taveeh.softwarevisualizationplugin.utils
 
 import com.intellij.psi.*
+import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.search.searches.ReferencesSearch
 import io.ktor.util.reflect.*
 
 class DependencyMapUtils {
@@ -15,7 +17,27 @@ class DependencyMapUtils {
         dependencies.forEach {
             println(it.name)
         }
+        dependencies.addAll(computeDependents(currentClass))
         return dependencies
+    }
+
+    fun computeDependents(currentClass: PsiClass): Set<PsiClass> {
+        val dependents: MutableSet<PsiClass> = mutableSetOf();
+        val psiReferences = ReferencesSearch.search(currentClass, GlobalSearchScope.projectScope(currentClass.project))
+        psiReferences.forEach {
+            getContainingClass(it.element)?.let { containingClass ->
+                dependents.add(containingClass)
+            }
+        }
+        return dependents
+    }
+
+    private fun getContainingClass(currentElement: PsiElement?): PsiClass? {
+        var element = currentElement
+        while (element != null && !element.instanceOf(PsiClass::class)) {
+            element = element.parent
+        }
+        return if (element != null) element as PsiClass else null
     }
 
     private fun computeFieldDependencies(currentClass: PsiClass): Set<PsiClass> {
@@ -381,4 +403,5 @@ class DependencyMapUtils {
         currentDependencies.add(classType)
         return currentDependencies
     }
+
 }

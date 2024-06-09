@@ -1,9 +1,6 @@
 package ubb.taveeh.softwarevisualizationplugin.processor.visitors
 
-import com.intellij.psi.JavaRecursiveElementVisitor
-import com.intellij.psi.PsiCallExpression
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiMethod
+import com.intellij.psi.*
 
 class MethodCounterVisitor(
     private val calledMethods: MutableSet<PsiMethod>
@@ -14,8 +11,14 @@ class MethodCounterVisitor(
 
     override fun visitCallExpression(callExpression: PsiCallExpression) {
         super.visitCallExpression(callExpression)
+        print("Call expression: ${callExpression.text}\n")
         callExpression.resolveMethod()?.let {
             calledMethods.add(it)
         }
+    }
+
+    override fun visitLambdaExpression(expression: PsiLambdaExpression) {
+        super.visitLambdaExpression(expression)
+        expression.body?.accept(this)
     }
 }

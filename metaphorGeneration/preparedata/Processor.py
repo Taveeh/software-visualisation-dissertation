@@ -1,8 +1,8 @@
-import urllib.error
-
-from matplotlib import pyplot as plt
 import datetime
 import os
+
+from matplotlib import pyplot as plt
+
 from metaphor.Pants import Pants
 from metaphor.Shirt import Shirt
 from metaphor.TShirt import TShirt
@@ -56,15 +56,15 @@ class Processor:
             legend[idx] = cloth.get_name
             colours[idx] = cloth.get_color().name.lower()
             cloth.draw(ax, initial_x, initial_y, idx)
-            if cloth.get_body_size() > max_body_size:
+            if cloth.get_max_height() > max_body_size:
                 max_body_size = cloth.get_max_height()
-            initial_x += cloth.get_max_width() + 2
+            initial_x += cloth.get_max_width() + 20
 
             if initial_x > MAX_BODY_SIZE_PER_IMAGE:
                 if initial_x > max_x:
                     max_x = initial_x
                 initial_x = 0
-                initial_y += max_body_size + 10 + cloth.get_body_size() / 4
+                initial_y += max_body_size + 10 + cloth.get_max_height() / 4
                 max_body_size = 0
 
         if initial_x > max_x:

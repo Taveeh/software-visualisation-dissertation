@@ -22,9 +22,8 @@ import java.time.LocalDateTime
 import java.util.*
 
 class MetricAnalysis : BaseAnalysisAction(
-    "Analyze Metrics", "Choose Scope for Metric Analysis"
+    "Generate Metaphor", "Choose Scope for Metaphor Generation",
 ) {
-
     override fun analyze(project: Project, analysisScope: AnalysisScope) {
         println("Something something please display something")
         println("Scope ----> " + analysisScope.displayName)
